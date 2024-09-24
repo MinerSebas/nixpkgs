@@ -8,7 +8,7 @@
 , gawk
 , kmod
 , pciutils
-, libraspberrypi
+, raspberrypi-utils
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "raspberrypi-eeprom";
@@ -48,7 +48,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     for i in rpi-eeprom-update rpi-eeprom-config; do
       wrapProgram $out/bin/$i \
         --set FIRMWARE_ROOT "$out/lib/firmware/raspberrypi/bootloader" \
-        ${lib.optionalString stdenvNoCC.isAarch64 "--set VCMAILBOX ${libraspberrypi}/bin/vcmailbox"} \
+        ${lib.optionalString stdenvNoCC.isAarch64 "--set VCMAILBOX ${raspberrypi-utils}/bin/vcmailbox"} \
         --prefix PATH : "${lib.makeBinPath ([
           binutils-unwrapped
           findutils
@@ -57,7 +57,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
           pciutils
           (placeholder "out")
         ] ++ lib.optionals stdenvNoCC.isAarch64 [
-          libraspberrypi
+          raspberrypi-utils
         ])}"
     done
   '';
